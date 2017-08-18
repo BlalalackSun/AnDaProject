@@ -134,8 +134,9 @@ class TieBa():
         text = re.sub(r'\n', ' ', text)
         # 连续的空白符换成单个空格
         text = re.sub(r'\s+', ' ', text)
+        # 将文本中的超链接换成空格，避免标签对结果影响(never try this change)
+        text = re.sub(r'((http|ftp|https):\/\/)[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?', ' ', text)
         return text
-
 
 
 
@@ -152,3 +153,6 @@ if __name__ == '__main__':
         time.sleep(5)
         time_end = time.time()
         print('Cost time in {0} is {1} seconds.'.format(school, str(time_end-time_begin)))
+
+
+# 
