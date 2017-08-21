@@ -84,7 +84,7 @@ if __name__ == '__main__':
         # 'ahu':['https://www.zhihu.com/search?type=content&q=%E5%AE%89%E5%A4%A7',
             #    'https://www.zhihu.com/search?type=content&q=%E5%AE%89%E5%BE%BD%E5%A4%A7%E5%AD%A6']
         'pku':['https://www.zhihu.com/search?type=content&q=%E5%8C%97%E5%A4%A7',
-        'https://www.zhihu.com/search?type=content&q=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6']
+               'https://www.zhihu.com/search?type=content&q=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6']
         # 在这里添加其他学校的缩写与相关关键词的链接    
     }
     
