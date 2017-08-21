@@ -84,7 +84,21 @@ if __name__ == '__main__':
         # 'ahu':['https://www.zhihu.com/search?type=content&q=%E5%AE%89%E5%A4%A7',
             #    'https://www.zhihu.com/search?type=content&q=%E5%AE%89%E5%BE%BD%E5%A4%A7%E5%AD%A6']
         'pku':['https://www.zhihu.com/search?type=content&q=%E5%8C%97%E5%A4%A7',
-               'https://www.zhihu.com/search?type=content&q=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6']
+               'https://www.zhihu.com/search?type=content&q=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6'],
+        'thu':['https://www.zhihu.com/search?type=content&q=%E6%B8%85%E5%8D%8E',
+               'https://www.zhihu.com/search?type=content&q=%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6'],
+        'hfut':['https://www.zhihu.com/search?type=content&q=%E5%90%88%E5%B7%A5%E5%A4%A7',
+                'https://www.zhihu.com/search?type=content&q=%E5%90%88%E8%82%A5%E5%B7%A5%E4%B8%9A%E5%A4%A7%E5%AD%A6'],
+        'ustc':['https://www.zhihu.com/search?type=content&q=%E4%B8%AD%E7%A7%91%E5%A4%A7',
+                'https://www.zhihu.com/search?type=content&q=%E4%B8%AD%E5%9B%BD%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6'],
+        'fudan':['https://www.zhihu.com/search?type=content&q=%E5%A4%8D%E6%97%A6',
+                 'https://www.zhihu.com/search?type=content&q=%E5%A4%8D%E6%97%A6%E5%A4%A7%E5%AD%A6'],
+        'sjtu':['https://www.zhihu.com/search?type=content&q=%E4%B8%8A%E4%BA%A4',
+                'https://www.zhihu.com/search?type=content&q=%E4%B8%8A%E6%B5%B7%E4%BA%A4%E9%80%9A%E5%A4%A7%E5%AD%A6'],
+        'zju':['https://www.zhihu.com/search?type=content&q=%E6%B5%99%E5%A4%A7',
+               'https://www.zhihu.com/search?type=content&q=%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6'],
+        'nju':['https://www.zhihu.com/search?type=content&q=%E5%8D%97%E5%A4%A7',
+               'https://www.zhihu.com/search?type=content&q=%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6']
         # 在这里添加其他学校的缩写与相关关键词的链接    
     }
     
