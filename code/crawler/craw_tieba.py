@@ -142,7 +142,7 @@ class TieBa():
 
 if __name__ == '__main__':
     school_base_url = {
-        'ahu':'http://tieba.baidu.com/f?kw=%E5%AE%89%E5%BE%BD%E5%A4%A7%E5%AD%A6&ie=utf-8&pn='
+        # 'ahu':'http://tieba.baidu.com/f?kw=%E5%AE%89%E5%BE%BD%E5%A4%A7%E5%AD%A6&ie=utf-8&pn='
         # 在这里添加学校缩写和贴吧首页url
     }
     
