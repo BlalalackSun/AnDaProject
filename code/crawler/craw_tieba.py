@@ -12,7 +12,7 @@ import random
 
 class TieBa():
     def __init__(self):
-        self.folder = os.getcwd() + '\\data\\tieba\\'
+        self.folder = os.getcwd() + '\\data\\raw\\tieba\\'
         self.driver = webdriver.Firefox()
 
 

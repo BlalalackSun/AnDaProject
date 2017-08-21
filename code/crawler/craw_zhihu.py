@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 
 class ZhiHu():
     def __init__(self):
-        self.folder = os.getcwd() + '\\data\\zhihu\\'
+        self.folder = os.getcwd() + '\\data\\raw\\zhihu\\'
         self.driver = webdriver.Firefox()    
 
     def access(self, school, urls):        
