@@ -7,25 +7,39 @@ import os
 import pprint
 import re
 import random
+import logging
 
+
+logger = logging.getLogger('tieba_log')
+logger.setLevel(logging.INFO)
 
 
 class TieBa():
     def __init__(self):
         self.folder = os.getcwd() + '\\data\\raw\\tieba\\'
+        self.log_folder = os.getcwd() + '\\data\\logs\\tieba\\'
         self.driver = webdriver.Firefox()
-
 
     # 一个具体高校的贴吧看帖是以pn=num 来索引下一页，每一页pn增长的步长是50，如下所示第一页，第二页url
     # http://tieba.baidu.com/f?kw=%E5%AE%89%E5%BE%BD%E5%A4%A7%E5%AD%A6&ie=utf-8&pn=0
     # http://tieba.baidu.com/f?kw=%E5%AE%89%E5%BE%BD%E5%A4%A7%E5%AD%A6&ie=utf-8&pn=50
-    def access(self, school, base_url, step=50):
-        print('School:' + school)
+    def access(self, school, base_url, page_idx=0, step=50):
+        # ---------log init---------
+        fh = logging.FileHandler(self.log_folder + school + '.log')
+        fh.setLevel(logging.INFO)
+        ch = logging.StreamHandler()
+        ch.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)s   %(message)s', datefmt='%y-%m-%d %H:%M:%S')
+        fh.setFormatter(formatter)
+        ch.setFormatter(formatter)
+
+        logger.addHandler(ch)
+        logger.addHandler(fh)
+        # ---------log init ---------
         
         cookie = self.driver.get_cookies()
         time.sleep(2)
         
-        page_idx = 0
         self.driver.get(base_url + str(int(page_idx*step)))
         time.sleep(3)
 
@@ -34,13 +48,13 @@ class TieBa():
             soup = BeautifulSoup(html, 'html.parser')
 
             current_page_num = soup.find('span', {'class':'pagination-current pagination-item '}).get_text()
-            print('-'*10,'Browse posts, page number:' + current_page_num,'-'*10)
+            logger.info('Browse posts, page number:' + current_page_num)
 
             # 获取看帖的一个页面
             posts = self._get_posts_url_in_page(soup)
             # 访问与存储该页面中的所有帖子
             for rep_num, post_url in posts:
-                print(rep_num, post_url)
+                logger.info('\t' + str(rep_num) + ' ' + post_url)
                 self._access_post(post_url)
 
             if '下一页' in soup.find('div', {'class':'pagination-default clearfix'}).get_text():
@@ -53,8 +67,11 @@ class TieBa():
             else:
                 break
                 
-        print('Finished the last page...')
-        
+        logger.info('Done...')
+        # ---------log free----------
+        logger.removeHandler(ch)
+        logger.removeHandler(fh)
+        # ---------log free----------
 
     # 返回当前页面中帖子的回复数以及帖子的链接构成的元组的列表, eg:
     # [(469, 'http://tieba.baidu.com/p/5223883150'), (0, 'http://tieba.baidu.com/p/3455737547'), ...]
@@ -84,17 +101,22 @@ class TieBa():
         html = self.driver.page_source
         soup = BeautifulSoup(html)
 
-        title = soup.find('h1', {'class':'core_title_txt'}).get_text()
-        title = self._clean(title)
+        try:
+            title = soup.find('h1', {'class':'core_title_txt'}).get_text()
+            title = self._clean(title)
+        except:
+            logger.info('\t'*2 + 'No title in this page, abandon it')
+            return
+
+
         contents = []
 
         page_idx = 1
         while True:
-            print('In post, page number:' + str(page_idx))
+            logger.info('\t'*2 + 'In post, page number:' + str(page_idx))
 
             for floor in soup.find_all('cc'):
                 floor_content = self._clean(floor.div.get_text())
-                # print(floor_content)
                 contents.append(floor_content)
 
 
@@ -112,11 +134,11 @@ class TieBa():
                         break
                     except:
                         if wrong_times >= 3:
-                            print('Wrong too many in ' + next_page_url + ', abandon the post...')
+                            logger.info('\t'*2 + 'Wrong too many in ' + next_page_url + ', abandon the post...')
                             return
                         wrong_times += 1
-                        print('Something wrong while access ' + next_page_url)
-                        print('Wait a moment...')
+                        logger.info('\t'*2 + 'Something wrong while access ' + next_page_url)
+                        logger.info('\t'*2 + 'Wait a moment...')
                         time.sleep(random.randint(20, 100))
             else:
                 break
@@ -142,17 +164,15 @@ class TieBa():
 
 if __name__ == '__main__':
     school_base_url = {
-        # 'ahu':'http://tieba.baidu.com/f?kw=%E5%AE%89%E5%BE%BD%E5%A4%A7%E5%AD%A6&ie=utf-8&pn='
-        # 在这里添加学校缩写和贴吧首页url
+        # 'ahu':('http://tieba.baidu.com/f?kw=%E5%AE%89%E5%BE%BD%E5%A4%A7%E5%AD%A6&ie=utf-8&pn=',110),
+        # 在这里添加学校缩写和贴吧首页base_url
+        'pku':('http://tieba.baidu.com/f?kw=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6&ie=utf-8&pn=',28)
     }
     
     tb = TieBa()
-    for school, url in school_base_url.items():        
-        time_begin = time.time()
-        tb.access(school, url)
-        time.sleep(5)
-        time_end = time.time()
-        print('Cost time in {0} is {1} seconds.'.format(school, str(time_end-time_begin)))
+    for school, url_and_idx in school_base_url.items():        
+        tb.access(school, url_and_idx[0], url_and_idx[1])
+        time.sleep(3)
 
 
 # 
