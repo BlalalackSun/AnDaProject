@@ -41,7 +41,7 @@ class TieBa():
         time.sleep(2)
         
         self.driver.get(base_url + str(int(page_idx*step)))
-        time.sleep(3)
+        time.sleep(4)
 
         while True:
             html = self.driver.page_source
@@ -166,13 +166,13 @@ if __name__ == '__main__':
     school_base_url = {
         # 'ahu':('http://tieba.baidu.com/f?kw=%E5%AE%89%E5%BE%BD%E5%A4%A7%E5%AD%A6&ie=utf-8&pn=',110),
         # 在这里添加学校缩写和贴吧首页base_url
-        'pku':('http://tieba.baidu.com/f?kw=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6&ie=utf-8&pn=',28)
+        'pku':('http://tieba.baidu.com/f?kw=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6&ie=utf-8&pn=',130)
     }
     
     tb = TieBa()
     for school, url_and_idx in school_base_url.items():        
         tb.access(school, url_and_idx[0], url_and_idx[1])
-        time.sleep(3)
+        time.sleep(5)
 
 
 # 
