@@ -41,7 +41,7 @@ class TieBa():
         time.sleep(2)
         
         self.driver.get(base_url + str(int(page_idx*step)))
-        time.sleep(4)
+        time.sleep(5)
 
         while True:
             html = self.driver.page_source
@@ -58,12 +58,27 @@ class TieBa():
                 self._access_post(post_url)
 
             if '下一页' in soup.find('div', {'class':'pagination-default clearfix'}).get_text():
-                # if page_idx >= 2: # for test
-                #     break
-                
                 page_idx += 1
-                self.driver.get(base_url + str(int(page_idx*step)))
-                time.sleep(3)
+                next_posts_page_url = base_url + str(int(page_idx*step))
+                wrong_times = 0
+                while True:
+                    try:
+                        self.driver.get(next_posts_page_url)
+                        time.sleep(2)
+                        break
+                    except:
+                        if wrong_times >= 3:
+                            logger.info('\t' + 'Wrong too many in "{}", abandon it'.format(next_posts_page_url))
+                            page_idx += 1
+                            next_posts_page_url = base_url + str(int(page_idx*step))
+                            self.driver.get(next_posts_page_url)
+                            time.sleep(2)
+                            break
+                        wrong_times += 1
+                        logger.info('\tSomething wrong while access post:' + next_posts_page_url)
+                        logger.info('Wait a moment...')
+                        time.sleep(random.randint(20, 100))
+
             else:
                 break
                 
@@ -129,6 +144,7 @@ class TieBa():
                 while True:
                     try:
                         self.driver.get(next_page_url)
+                        time.sleep(1)
                         html = self.driver.page_source
                         soup = BeautifulSoup(html)
                         break
@@ -165,14 +181,14 @@ class TieBa():
 if __name__ == '__main__':
     school_base_url = {
         # 'ahu':('http://tieba.baidu.com/f?kw=%E5%AE%89%E5%BE%BD%E5%A4%A7%E5%AD%A6&ie=utf-8&pn=',110),
+        # 'pku':('http://tieba.baidu.com/f?kw=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6&ie=utf-8&pn=',130),
+        # 'thu':('http://tieba.baidu.com/f?kw=%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6&ie=utf-8&pn=', 102),
+        # 'nju':('http://tieba.baidu.com/f?kw=%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6&ie=utf-8&pn=', 83)
+        'zju':('http://tieba.baidu.com/f?kw=%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6&ie=utf-8&pn=', 3)
         # 在这里添加学校缩写和贴吧首页base_url
-        'pku':('http://tieba.baidu.com/f?kw=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6&ie=utf-8&pn=',130)
     }
     
     tb = TieBa()
     for school, url_and_idx in school_base_url.items():        
         tb.access(school, url_and_idx[0], url_and_idx[1])
         time.sleep(5)
-
-
-# 
